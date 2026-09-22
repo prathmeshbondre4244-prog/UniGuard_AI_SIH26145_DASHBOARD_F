@@ -1,2 +1,17 @@
+[project]
+name = "uniguard-ai"
+version = "0.1.0"
+requires-python = ">=3.12,<3.15"
+dependencies = [
+    "fastapi==0.116.1",
+    "uvicorn==0.35.0",
+    "scapy==2.6.1",
+    "scikit-learn==1.7.1",
+    "numpy==2.3.2",
+    "pandas==2.3.2",
+    "scipy==1.18.1",
+    "joblib==1.5.1"
+]
+
 [tool.vercel]
 entrypoint = "backend.main:app"
