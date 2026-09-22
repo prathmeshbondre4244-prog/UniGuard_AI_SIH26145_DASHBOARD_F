@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UniGuard AI • Security Operations</title>
+<link rel="stylesheet" href="/dashboard/style.css?v=3">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">◈</div>
+      <div><strong>UniGuard AI</strong><span>Cyber Defense Platform</span></div>
+    </div>
+    <div class="mode-pill"><span class="pulse"></span> ONE-WAY MODE</div>
+    <div class="constraint">PASSIVE • READ-ONLY<br><b>NO RETURN PATH</b></div>
+    <nav>
+      <button class="nav-item active" data-page="dashboard"><span>⌂</span> Dashboard</button>
+      <button class="nav-item" data-page="traffic"><span>◌</span> Live Traffic</button>
+      <button class="nav-item" data-page="flows"><span>≋</span> Flow Analysis</button>
+      <button class="nav-item" data-page="detection"><span>✦</span> AI Detection</button>
+      <button class="nav-item" data-page="alerts"><span>!</span> Threat Alerts <em id="alertNavCount">0</em></button>
+      <button class="nav-item" data-page="analytics"><span>◫</span> Threat Analytics</button>
+      <button class="nav-item" data-page="model"><span>◎</span> Model Information</button>
+      <button class="nav-item" data-page="system"><span>▣</span> System Status</button>
+      <button class="nav-item" data-page="incidents"><span>◉</span> Incident Center</button>
+      <button class="nav-item" data-page="network"><span>⌁</span> Network Map</button>
+      <button class="nav-item" data-page="dns"><span>⌘</span> DNS Intelligence</button>
+      <button class="nav-item" data-page="validation"><span>✓</span> Validation Lab</button>
+      <button class="nav-item" data-page="config"><span>⚙</span> Configuration</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="mini-status"><span class="dot green"></span><div><b>Backend</b><small id="sideBackend">Connected</small></div></div><div class="version">SIH26145 • v0.2</div></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar"><div><div class="eyebrow">CYBER THREAT MONITORING</div><h1 id="pageTitle">Security Overview</h1></div><div class="top-actions"><div class="live-badge"><span class="pulse"></span><span id="captureState">MONITORING</span></div><button class="icon-btn" id="refreshBtn" title="Refresh">↻</button></div></header>
+
+    <section class="page active" id="page-dashboard">
+      <div class="hero-row"><div><h2>Network Security Overview</h2><p>Passive AI monitoring of observable one-way IP traffic.</p></div><div class="hero-status"><span class="dot green"></span><b id="heroHealth">SYSTEM OPERATIONAL</b><small id="heroTime">—</small></div></div>
+      <div class="metric-grid">
+        <div class="metric"><div class="metric-icon blue">⌁</div><div><span>Total Flows</span><strong id="mFlows">0</strong><small>Observed by sensor</small></div></div>
+        <div class="metric"><div class="metric-icon cyan">◌</div><div><span>Packets Observed</span><strong id="mPackets">0</strong><small>Passive collection</small></div></div>
+        <div class="metric"><div class="metric-icon red">!</div><div><span>Threat Alerts</span><strong id="mThreats">0</strong><small>AI/anomaly alerts</small></div></div>
+        <div class="metric"><div class="metric-icon green">✓</div><div><span>Model Status</span><strong id="mModel">NOT READY</strong><small id="mModelSub">Train model to enable detection</small></div></div>
+      </div>
+      <div class="dashboard-grid">
+        <div class="panel chart-panel threat-activity-panel"><div class="panel-head"><div><h3>Threat Activity</h3><p>Real-time threat timeline and event distribution</p></div><span class="live-label"><span class="tiny-dot"></span> LIVE</span></div><div class="threat-legend"><span><i class="legend-dot normal"></i>Normal</span><span><i class="legend-dot suspicious"></i>Suspicious</span><span><i class="legend-dot malicious"></i>Malicious</span><span><i class="legend-line"></i>Total Alerts</span></div><div class="threat-chart-wrap" id="threatChart"><div class="empty-chart"><strong>NO THREAT ACTIVITY</strong><span>Waiting for live telemetry and detection events…</span></div></div></div>
+        <div class="panel"><div class="panel-head"><div><h3>Security Posture</h3><p>Architecture constraints</p></div></div><div class="posture"><div><span class="posture-icon green">✓</span><div><b>One-way mode</b><small>ENABLED</small></div></div><div><span class="posture-icon green">✓</span><div><b>Return path</b><small>NOT USED</small></div></div><div><span class="posture-icon blue">◈</span><div><b>Capture interface</b><small id="postureInterface">NOT SET</small></div></div><div><span class="posture-icon" id="postureModelIcon">!</span><div><b>AI model</b><small id="postureModel">NOT READY</small></div></div></div></div>
+      </div>
+      <div class="panel alert-panel"><div class="panel-head"><div><h3>Latest Threat Alerts</h3><p>Most recent detection events</p></div><button class="text-btn" data-page-jump="alerts">View all →</button></div><div id="recentAlerts" class="alert-list"></div></div>
+    </section>
+
+    <section class="page" id="page-traffic"><div class="section-heading"><div><h2>Live Traffic</h2><p>Passive observation status and capture controls.</p></div></div><div class="control-panel panel"><div class="capture-status"><div class="big-state" id="trafficState">STOPPED</div><span id="trafficInterface">Interface: NOT SET</span></div><div class="controls"><input id="iface" placeholder="Network interface name"><button class="primary" id="setBtn">Set Interface</button><button class="success" id="startBtn">Start Capture</button><button class="danger" id="stopBtn">Stop Capture</button><button class="secondary" id="demoBtn">Run Safe Demo</button><button class="ghost" id="clearBtn">Clear Data</button></div><p class="helper">Read-only monitoring. UniGuard does not send packets, perform scans, or use a return path.</p></div><div class="traffic-cards"><div class="panel"><span>Packets</span><strong id="tPackets">0</strong></div><div class="panel"><span>Flows</span><strong id="tFlows">0</strong></div><div class="panel"><span>Threats</span><strong id="tThreats">0</strong></div></div></section>
+
+    <section class="page" id="page-flows"><div class="section-heading"><div><h2>Flow Analysis</h2><p>Flow-level features used by the detection pipeline.</p></div></div><div class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Source</th><th>Destination</th><th>Protocol</th><th>Port</th><th>Packets</th><th>Bytes</th><th>Rate</th></tr></thead><tbody id="flowTable"><tr><td colspan="7" class="empty">No captured flows yet.</td></tr></tbody></table></div></div></section>
+
+    <section class="page" id="page-detection"><div class="section-heading"><div><h2>AI Detection</h2><p>Known-threat classification and unknown-anomaly detection.</p></div></div><div class="ai-grid"><div class="panel model-card"><div class="model-symbol">✦</div><h3>Random Forest</h3><span class="badge blue">KNOWN THREATS</span><p>Supervised classification of observable flow behaviour.</p><div class="feature-row"><span>Model status</span><b id="rfStatus">NOT READY</b></div></div><div class="panel model-card"><div class="model-symbol">◎</div><h3>Isolation Forest</h3><span class="badge purple">ANOMALY DETECTION</span><p>Flags behaviour that differs from learned normal traffic patterns.</p><div class="feature-row"><span>Model status</span><b id="isoStatus">NOT READY</b></div></div></div><div class="panel"><h3>Detection Pipeline</h3><div class="pipeline"><span>Passive Traffic</span><i>→</i><span>Flow Creation</span><i>→</i><span>Feature Extraction</span><i>→</i><span>RF + IF</span><i>→</i><span>Evidence Alert</span></div></div></section>
+
+    <section class="page" id="page-alerts"><div class="section-heading"><div><h2>Threat Alerts</h2><p>Evidence-based alerts generated by the backend.</p></div><button class="ghost" id="clearBtn2">Clear alerts</button></div><div id="allAlerts" class="alert-list full"></div></section>
+
+    <section class="page" id="page-analytics"><div class="section-heading"><div><h2>Threat Analytics</h2><p>Session-level security activity.</p></div></div><div class="analytics-grid"><div class="panel"><h3>Threat Count</h3><div class="big-number" id="aThreats">0</div><p>Total alerts generated in this session.</p></div><div class="panel"><h3>Traffic Volume</h3><div class="big-number" id="aPackets">0</div><p>Packets observed by the passive sensor.</p></div><div class="panel"><h3>Flow Volume</h3><div class="big-number" id="aFlows">0</div><p>Flow records observed.</p></div></div><div class="panel"><div class="panel-head"><div><h3>Severity Distribution</h3><p>Based on generated alerts.</p></div></div><div id="severityBars" class="severity-bars"></div></div></section>
+
+    <section class="page" id="page-model"><div class="section-heading"><div><h2>Model Information</h2><p>Current UniGuard AI detection components.</p></div></div><div class="info-grid"><div class="panel info-card"><span>ALGORITHM</span><h3>Random Forest</h3><p>Classifies known traffic patterns using engineered flow features.</p></div><div class="panel info-card"><span>ALGORITHM</span><h3>Isolation Forest</h3><p>Provides unsupervised anomaly scoring for unusual behaviour.</p></div><div class="panel info-card"><span>FEATURE SPACE</span><h3>13 Flow Features</h3><p>Packet, byte, timing, rate, size, port diversity and connection behaviour.</p></div><div class="panel info-card"><span>CONSTRAINT</span><h3>Passive / Read-only</h3><p>No active probing, source interaction, or return-path communication.</p></div></div></section>
+
+    <section class="page" id="page-incidents">
+      <div class="section-heading"><div><h2>Incident Center</h2><p>Group related alerts into investigation-ready security incidents.</p></div><span class="badge blue">READ-ONLY INVESTIGATION</span></div>
+      <div class="incident-grid">
+        <div class="panel incident-summary"><span class="eyebrow">ACTIVE INCIDENTS</span><strong id="incidentCount">0</strong><small>Derived from current alert stream</small></div>
+        <div class="panel incident-summary"><span class="eyebrow">HIGH / CRITICAL</span><strong id="incidentHigh">0</strong><small>Priority alerts in session</small></div>
+        <div class="panel incident-summary"><span class="eyebrow">UNRESOLVED</span><strong id="incidentOpen">0</strong><small>Requires analyst review</small></div>
+      </div>
+      <div class="panel"><div class="panel-head"><div><h3>Investigation Queue</h3><p>Each row is derived from backend alert evidence.</p></div></div><div id="incidentList" class="incident-list"></div></div>
+    </section>
+
+    <section class="page" id="page-network">
+      <div class="section-heading"><div><h2>Network Map</h2><p>Visual view of observable source-to-destination flow relationships.</p></div><span class="badge purple">PASSIVE VIEW</span></div>
+      <div class="panel network-map"><div class="network-canvas"><div class="net-node protected"><span>▣</span><b>PROTECTED<br>NETWORK</b></div><div class="net-line"><i>ONE-WAY</i></div><div class="net-node sensor"><span>◈</span><b>UNIGUARD<br>SENSOR</b></div><div class="net-line"><i>FLOW DATA</i></div><div class="net-node ai"><span>✦</span><b>AI / ML<br>ENGINE</b></div><div class="net-line"><i>ALERTS</i></div><div class="net-node dashboard-node"><span>▤</span><b>SECURITY<br>DASHBOARD</b></div></div><div class="no-return">✕ NO RETURN PATH • NO ACTIVE PROBING</div></div>
+      <div class="network-stats"><div class="panel"><span>Observed Sources</span><strong id="netSources">0</strong></div><div class="panel"><span>Observed Destinations</span><strong id="netDestinations">0</strong></div><div class="panel"><span>Protocols</span><strong id="netProtocols">0</strong></div><div class="panel"><span>Flows in View</span><strong id="netFlows">0</strong></div></div>
+    </section>
+
+    <section class="page" id="page-dns">
+      <div class="section-heading"><div><h2>DNS Intelligence</h2><p>Metadata-oriented DNS indicators for suspicious naming and traffic behaviour.</p></div><span class="badge blue">METADATA ONLY</span></div>
+      <div class="dns-grid"><div class="panel"><span class="eyebrow">DNS FLOWS</span><strong id="dnsFlows">0</strong><small>Observed destination port 53 flows</small></div><div class="panel"><span class="eyebrow">UNIQUE DNS SOURCES</span><strong id="dnsSources">0</strong><small>Sources producing DNS traffic</small></div><div class="panel"><span class="eyebrow">HIGH-RATE DNS</span><strong id="dnsHighRate">0</strong><small>Flows above 100 packets/s</small></div></div>
+      <div class="panel"><div class="panel-head"><div><h3>DNS Flow Indicators</h3><p>Current observable flow metadata; no payload decryption.</p></div></div><div class="table-wrap"><table><thead><tr><th>Source</th><th>Destination</th><th>Protocol</th><th>Packets</th><th>Rate</th><th>Bytes</th><th>Indicator</th></tr></thead><tbody id="dnsTable"><tr><td colspan="7" class="empty">No DNS flows observed yet.</td></tr></tbody></table></div></div>
+    </section>
+
+    <section class="page" id="page-validation">
+      <div class="section-heading"><div><h2>Validation Lab</h2><p>Prototype evaluation workspace for reproducible detection experiments.</p></div><span class="badge orange">MEASURED RESULTS ONLY</span></div>
+      <div class="validation-banner"><div><b>Evaluation principle</b><p>Use representative labelled traffic and controlled scenarios. Record the actual metrics produced by the experiment.</p></div><button class="secondary" id="demoValidationBtn">Run Safe Demo</button></div>
+      <div class="validation-grid"><div class="panel"><span class="eyebrow">DATASET</span><h3>Traffic Scenarios</h3><ul class="check-list"><li>Normal traffic</li><li>Port scanning</li><li>Flooding / DDoS-like behaviour</li><li>Beaconing / periodic traffic</li><li>Anomalous flows</li></ul></div><div class="panel"><span class="eyebrow">METRICS</span><h3>Report after experiment</h3><ul class="check-list"><li>Precision</li><li>Recall</li><li>F1 score</li><li>False-positive rate</li><li>Detection latency</li><li>Throughput</li></ul></div></div>
+      <div class="panel"><h3>Experiment Status</h3><div class="experiment-row"><span>Prototype demo</span><b class="status-chip ready">AVAILABLE</b></div><div class="experiment-row"><span>Real dataset evaluation</span><b class="status-chip pending">PENDING</b></div><div class="experiment-row"><span>Live passive capture</span><b class="status-chip pending">PENDING</b></div></div>
+    </section>
+
+    <section class="page" id="page-config">
+      <div class="section-heading"><div><h2>Configuration</h2><p>Read-only project configuration and detection assumptions.</p></div></div>
+      <div class="config-grid"><div class="panel"><h3>Architecture</h3><div class="config-row"><span>Operating mode</span><b>ONE-WAY</b></div><div class="config-row"><span>Return path</span><b>NOT USED</b></div><div class="config-row"><span>Capture mode</span><b>PASSIVE</b></div><div class="config-row"><span>Payload requirement</span><b>NOT REQUIRED</b></div></div><div class="panel"><h3>Detection</h3><div class="config-row"><span>Known threats</span><b>Random Forest</b></div><div class="config-row"><span>Anomalies</span><b>Isolation Forest</b></div><div class="config-row"><span>Feature count</span><b>13 flow features</b></div><div class="config-row"><span>Alert evidence</span><b>Enabled</b></div></div></div>
+      <div class="panel"><h3>Security Guardrails</h3><div class="guardrail"><span>✓</span> No packet injection</div><div class="guardrail"><span>✓</span> No active probing</div><div class="guardrail"><span>✓</span> No return-path commands</div><div class="guardrail"><span>✓</span> Flow-level analysis</div></div>
+    </section>
+
+    <section class="page" id="page-system"><div class="section-heading"><div><h2>System Status</h2><p>Operational state and architecture compliance.</p></div></div><div class="system-grid"><div class="panel status-list"><div class="system-item"><span class="dot green"></span><div><b>Backend</b><small>CONNECTED</small></div></div><div class="system-item"><span class="dot" id="sysModelDot"></span><div><b>Model</b><small id="sysModel">NOT READY</small></div></div><div class="system-item"><span class="dot green"></span><div><b>One-way mode</b><small>ENABLED</small></div></div><div class="system-item"><span class="dot green"></span><div><b>Return path</b><small>NOT USED</small></div></div><div class="system-item"><span class="dot" id="sysCaptureDot"></span><div><b>Capture</b><small id="sysCapture">STOPPED</small></div></div><div class="system-item"><span class="dot"></span><div><b>Interface</b><small id="sysInterface">NOT SET</small></div></div></div><div class="panel architecture"><h3>Architecture Constraint</h3><div class="arch-flow"><span>PROTECTED NETWORK</span><b>ONE-WAY →</b><span>PASSIVE SENSOR</span><b>→</b><span>AI / ML</span><b>→</b><span>ALERT DASHBOARD</span></div><div class="no-return">✕ NO RETURN PATH</div></div></div></section>
+  </main>
+</div>
+<script src="/dashboard/app.js?v=3"></script>
+</body>
+</html>
